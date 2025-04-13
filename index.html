@@ -8,8 +8,7 @@
     <link rel="icon" href="/assets/icons8-star.gif" type="image/gif">
     <link rel="icon" href="/assets/star.png" type="image/png" sizes="32x32">
     <!-- Fonts -->
-    <link href="https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Open Graph -->
     <meta property="og:title" content="Your World">
     <meta property="og:description" content="Your Name - Coding, grinding, living real. Link up.">
@@ -18,13 +17,298 @@
     <meta property="og:image:height" content="630">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://yourusername.github.io/your-repo/">
-    <!-- CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <!-- Inline CSS -->
+    <style>
+        :root {
+            --bg-color: #0A0A0A;
+            --text-color: #FFFFFF;
+            --card-bg: linear-gradient(180deg, rgba(20, 20, 20, 0.9), rgba(30, 30, 30, 0.9));
+            --accent-color: #5A1414;
+            --border-color: #FFFFFF;
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+            --glow: 0 0 6px rgba(90, 20, 20, 0.4);
+        }
+
+        body.light-mode {
+            --bg-color: #F5F5F5;
+            --text-color: #1A1A1A;
+            --card-bg: linear-gradient(180deg, rgba(230, 230, 230, 0.9), rgba(240, 240, 240, 0.9));
+            --accent-color: #5A1414;
+            --border-color: #1A1A1A;
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            --glow: 0 0 6px rgba(90, 20, 20, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+            animation: fadeIn 0.9s ease-out;
+        }
+
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        #intro-overlay.hidden {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+
+        #intro-overlay h1 {
+            font-size: 2.6em;
+            font-weight: 700;
+            color: var(--border-color);
+            text-shadow: var(--glow);
+            cursor: pointer;
+            opacity: 0.95;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        #intro-overlay h1:hover {
+            transform: scale(1.04);
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 850px;
+            width: 100%;
+            padding: 10px;
+            display: none;
+            perspective: 1000px;
+        }
+
+        .container.visible {
+            display: flex;
+            justify-content: center;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .pfp {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            margin: 0 auto 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pfp:hover {
+            transform: scale(1.12);
+            box-shadow: var(--glow);
+        }
+
+        h1, h2 {
+            font-weight: 700;
+            color: var(--border-color);
+        }
+
+        h1 {
+            font-size: 1.5em;
+        }
+
+        h2 {
+            font-size: 1.1em;
+            margin: 8px 0 5px;
+        }
+
+        p {
+            font-size: 0.8em;
+            line-height: 1.4;
+            opacity: 0.92;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .intro, .bio, .about {
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: scale(0.97);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .intro.visible, .bio.visible, .about.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            display: block;
+            text-decoration: none;
+            color: var(--text-color);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, var(--accent-color) 10%, transparent 70%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.4s ease;
+        }
+
+        .btn:active::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        #audio-visualizer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            z-index: 10;
+            opacity: 0.8;
+        }
+
+        #mode-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: var(--glow);
+        }
+
+        #mode-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; filter: blur(3px); }
+            100% { opacity: 1; filter: blur(0); }
+        }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 0.6; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: var(--glow); }
+            50% { box-shadow: 0 0 10px rgba(90, 20, 20, 0.5); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 6px;
+            }
+
+            .card {
+                padding: 12px;
+            }
+
+            .pfp {
+                width: 70px;
+                height: 70px;
+            }
+
+            h1 {
+                font-size: 1.3em;
+            }
+
+            h2 {
+                font-size: 1em;
+            }
+
+            p {
+                font-size: 0.75em;
+            }
+
+            .links {
+                grid-template-columns: 1fr;
+            }
+
+            #intro-overlay h1 {
+                font-size: 2em;
+            }
+
+            #audio-visualizer {
+                height: 35px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Intro Overlay -->
     <div id="intro-overlay">
-        <h1>Yo, Jump In</h1>
+        <h1>Click to Enter</h1>
     </div>
 
     <!-- Audio -->
@@ -56,6 +340,9 @@
                 <a href="https://github.com/yourusername" class="btn github" target="_blank">GitHub</a>
                 <a href="https://twitter.com/yourusername" class="btn twitter" target="_blank">Twitter</a>
                 <a href="mailto:your.email@example.com" class="btn email">Email</a>
+                <a href="https://instagram.com/yourusername" class="btn instagram" target="_blank">Instagram</a>
+                <a href="https://youtube.com/yourchannel" class="btn youtube" target="_blank">YouTube</a>
+                <a href="https://linkedin.com/in/yourusername" class="btn linkedin" target="_blank">LinkedIn</a>
             </div>
         </div>
     </div>
@@ -63,7 +350,203 @@
     <!-- Theme Toggle -->
     <button id="mode-toggle">🌙</button>
 
-    <!-- JS -->
-    <script src="script.js"></script>
+    <!-- Inline JavaScript -->
+    <script>
+        // Intro Overlay
+        const introOverlay = document.getElementById('intro-overlay');
+        const container = document.querySelector('.container');
+        const bgMusic = document.getElementById('bg-music');
+        bgMusic.volume = 0.3;
+        introOverlay.addEventListener('click', () => {
+            introOverlay.classList.add('hidden');
+            container.classList.add('visible');
+            document.body.style.overflow = 'auto';
+            bgMusic.play().catch(err => console.error('Audio play failed:', err));
+        });
+
+        // Dynamic 3D Card Tilt
+        const card = document.querySelector('.card');
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const mouseX = e.clientX - centerX;
+            const mouseY = e.clientY - centerY;
+            const rotateX = -(mouseY / rect.height) * 12;
+            const rotateY = (mouseX / rect.width) * 12;
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+        });
+
+        // Black Dot Particles
+        const particleCanvas = document.createElement('canvas');
+        particleCanvas.id = 'particles';
+        document.body.appendChild(particleCanvas);
+        particleCanvas.style.position = 'fixed';
+        particleCanvas.style.top = '0';
+        particleCanvas.style.left = '0';
+        particleCanvas.style.zIndex = '-1';
+        particleCanvas.width = window.innerWidth;
+        particleCanvas.height = window.innerHeight;
+        const pCtx = particleCanvas.getContext('2d');
+        const particles = [];
+        class Particle {
+            constructor() {
+ owl
+                this.x = Math.random() * particleCanvas.width;
+                this.y = Math.random() * particleCanvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() * 0.3 - 0.15);
+                this.speedY = (Math.random() * 0.3 - 0.15);
+                this.opacity = Math.random() * 0.4 + 0.3;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > particleCanvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > particleCanvas.height) this.speedY *= -1;
+            }
+            draw() {
+                pCtx.fillStyle = `rgba(0, 0, 0, ${this.opacity})`;
+                pCtx.beginPath();
+                pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                pCtx.fill();
+            }
+        }
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < 80; i++) {
+                particles.push(new Particle());
+            }
+        }
+        function animateParticles() {
+            pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        initParticles();
+        animateParticles();
+        window.addEventListener('resize', () => {
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+            initParticles();
+        });
+
+        // Audio Waveform Visualizer
+        let analyser, dataArray;
+        function initAudio() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioCtx.createMediaElementSource(bgMusic);
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 1024;
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+                const canvas = document.getElementById('audio-visualizer');
+                canvas.width = window.innerWidth;
+                canvas.height = 50;
+                const ctx = canvas.getContext('2d');
+                function updateVisualizer() {
+                    analyser.getByteFrequencyData(dataArray);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.strokeStyle = document.body.classList.contains('light-mode') ? '#5A1414' : '#FFFFFF';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    const sliceWidth = canvas.width / bufferLength;
+                    let x = 0;
+                    for (let i = 0; i < bufferLength; i++) {
+                        const v = dataArray[i] / 255;
+                        const y = v * canvas.height;
+                        if (i === 0) {
+                            ctx.moveTo(x, canvas.height - y);
+                        } else {
+                            ctx.lineTo(x, canvas.height - y);
+                        }
+                        x += sliceWidth;
+                    }
+                    ctx.stroke();
+                    requestAnimationFrame(updateVisualizer);
+                }
+                updateVisualizer();
+            } catch (e) {
+                console.error('AudioContext failed:', e);
+                document.getElementById('audio-visualizer').style.display = 'none';
+            }
+        }
+        introOverlay.addEventListener('click', () => initAudio(), { once: true });
+
+        // Theme Toggle
+        const modeToggle = document.getElementById('mode-toggle');
+        modeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            modeToggle.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+            const visualizerCanvas = document.getElementById('audio-visualizer');
+            visualizerCanvas.style.display = 'none';
+            particleCanvas.style.display = 'none';
+            setTimeout(() => {
+                visualizerCanvas.style.display = 'block';
+                particleCanvas.style.display = 'block';
+            }, 0);
+        });
+
+        // Section Animations
+        const sections = document.querySelectorAll('.intro, .bio, .about');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.7 });
+        sections.forEach(el => observer.observe(el));
+
+        // Typewriter Effect
+        const introText = document.getElementById('bio-text');
+        const introContent = introText.textContent;
+        introText.textContent = '';
+        let i = 0;
+        function typeWriter() {
+            if (i < introContent.length) {
+                introTextCONTENT += introContent.charAt(i);
+                i++;
+                setTimeout(typeWriter, 25);
+            }
+        }
+        introOverlay.addEventListener('click', () => setTimeout(typeWriter, 150), { once: true });
+
+        // PFP Glow Animation
+        const pfp = document.querySelector('.pfp');
+        pfp.addEventListener('mouseenter', () => {
+            pfp.style.animation = 'glowPulse 1.2s infinite';
+        });
+        pfp.addEventListener('mouseleave', () => {
+            pfp.style.animation = 'none';
+        });
+
+        // Button Ripple
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const ripple = document.createElement('span');
+                ripple.style.position = 'absolute';
+                ripple.style.background = 'radial-gradient(circle, var(--accent-color) 10%, transparent 70%)';
+                ripple.style.width = '70px';
+                ripple.style.height = '70px';
+                ripple.style.left = `${e.offsetX - 35}px`;
+                ripple.style.top = `${e.offsetY - 35}px`;
+                ripple.style.borderRadius = '50%';
+                ripple.style.pointerEvents = 'none';
+                ripple.style.animation = 'ripple 0.5s ease-out';
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 500);
+            });
+        });
+    </script>
 </body>
 </html>
